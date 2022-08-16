@@ -1,0 +1,98 @@
+blueprint:
+  name: ESPHome Switch
+  description: |-
+    A Blueprint to handle the actions from a 2 gang switch running ESPHome with events set up.
+  domain: automation
+  source_url: https://github.com/jesserockz/blueprints/blob/main/esphome-switch-2x.yaml
+  input:
+    device:
+      name: ESPHome Device
+      description: Select the ESPHome Device
+      selector:
+        device:
+          integration: esphome
+    switch_1_single:
+      name: Switch 1 Single Click
+      default: []
+      selector:
+        action:
+    switch_1_double:
+      name: Switch 1 Double Click
+      default: []
+      selector:
+        action:
+    switch_1_four:
+      name: Switch 1 Four Clicks
+      default: []
+      selector:
+        action:
+    switch_1_hold:
+      name: Switch 1 Hold
+      default: []
+      selector:
+        action:
+    switch_2_single:
+      name: Switch 2 Single Click
+      default: []
+      selector:
+        action:
+    switch_2_double:
+      name: Switch 2 Double Click
+      default: []
+      selector:
+        action:
+    switch_2_four:
+      name: Switch 2 Four Clicks
+      default: []
+      selector:
+        action:
+    switch_2_hold:
+      name: Switch 2 Hold
+      default: []
+      selector:
+        action:
+
+mode: parallel
+trigger:
+  - platform: event
+    event_type: esphome.switch
+    event_data:
+      device_id: !input "device"
+
+action:
+  - variables:
+      action: "{{ trigger.event.data.action }}"
+      button: "{{ trigger.event.data.button }}"
+  - choose:
+      - conditions:
+          - "{{ button == 1 }}"
+        sequence:
+          - choose:
+              - conditions:
+                  - "{{ action == 'click' }}"
+                sequence: !input "switch_1_single"
+              - conditions:
+                  - "{{ action == 'double_click' }}"
+                sequence: !input "switch_1_double"
+              - conditions:
+                  - "{{ action == 'four_clicks' }}"
+                sequence: !input "switch_1_four"
+              - conditions:
+                  - "{{ action == 'hold' }}"
+                sequence: !input "switch_1_hold"
+      - conditions:
+          - "{{ button == 2 }}"
+        sequence:
+          - choose:
+              - conditions:
+                  - "{{ action == 'click' }}"
+                sequence: !input "switch_2_single"
+              - conditions:
+                  - "{{ action == 'double_click' }}"
+                sequence: !input "switch_2_double"
+              - conditions:
+                  - "{{ action == 'four_clicks' }}"
+                sequence: !input "switch_2_four"
+              - conditions:
+                  - "{{ action == 'hold' }}"
+                sequence: !input "switch_2_hold"
