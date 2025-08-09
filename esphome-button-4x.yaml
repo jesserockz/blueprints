@@ -1,5 +1,5 @@
 blueprint:
-  name: ESPHome Buttons
+  name: ESPHome Buttons (2x)
   description: |-
     A Blueprint to handle the events from an ESPHome device with 4 event entities.
   domain: automation
